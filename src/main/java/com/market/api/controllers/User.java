@@ -1,5 +1,6 @@
-package com.example.demo.users;
+package com.market.api.controllers;
 
+import com.market.api.controllers.dto.Manager;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,9 +17,7 @@ public class User {
     @CrossOrigin
     @PostMapping(path = "/users", consumes = "application/json", produces = "application/json")
     public ResponseEntity<Manager> getNumber(@RequestBody Manager manager){
-
-            System.out.println(String.format("It's ==  %s  === from front", manager.toString()));
-    
+        System.out.println(String.format("It's ==  %s  === from front", manager.toString()));
         return new ResponseEntity<>(manager, HttpStatus.CREATED);
     }
 

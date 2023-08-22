@@ -1,4 +1,4 @@
-package com.example.demo.users;
+package com.market.api.controllers.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
