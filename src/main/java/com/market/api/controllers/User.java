@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 public class User {
-
     @CrossOrigin
     @GetMapping("/user")
     public String sendString(){
