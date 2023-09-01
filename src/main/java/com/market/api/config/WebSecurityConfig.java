@@ -23,12 +23,14 @@ public class WebSecurityConfig {
 
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
         http
-        .authorizeHttpRequests()
-        .anyRequest()
-        .authenticated()
+        .csrf().disable()
+        .authorizeRequests()
+        .antMatchers("/api/auth/**")
+        .permitAll()
+        .anyRequest().authenticated()
         .and()
         .httpBasic();
-        return http.build(); 
+        return http.build();
     }
 
     @Bean
