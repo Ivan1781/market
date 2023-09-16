@@ -22,9 +22,9 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-
 
 @RestController
 @RequestMapping("/api/auth")
@@ -40,7 +40,8 @@ public class AuthController {
     private PasswordEncoder passwordEncoder;
     @Autowired
     private JWTGenerator jwtGenerator;
-
+    
+    @CrossOrigin
     @PostMapping("/register")
     public ResponseEntity<String> register(@RequestBody RegisterDto registerDto) {
         if(userRepository.existsByUserName(registerDto.getUserName())){
@@ -55,17 +56,21 @@ public class AuthController {
         return new ResponseEntity<String>("User successfuly registered", HttpStatus.OK);
     }
 
+    @CrossOrigin
     @PostMapping("/login")
     public ResponseEntity<AuthResponseDTO> login(@RequestBody LoginDto loginDto){
+        System.out.println("I'm here"); 
         UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken =
         new UsernamePasswordAuthenticationToken(loginDto.getUsername(),
-             loginDto.getPassword());
-             System.out.println(loginDto.getPassword() + loginDto.getUsername());
-             System.out.println(usernamePasswordAuthenticationToken);
+            loginDto.getPassword());
+            System.out.println(loginDto.getPassword() + loginDto.getUsername());
+            System.out.println(usernamePasswordAuthenticationToken);
         Authentication authentication = authenticationManager.authenticate(
             usernamePasswordAuthenticationToken);
             SecurityContextHolder.getContext().setAuthentication(authentication);
             String token = jwtGenerator.generateToken(authentication);
-            return new ResponseEntity<>(new AuthResponseDTO(token), HttpStatus.OK);
+            // ResponseEntity<AuthResponseDTO> q = new ResponseEntity<AuthResponseDTO>(new AuthResponseDTO(token), HttpStatus.OK);
+            // System.out.println(q.toString());
+            return ResponseEntity.ok(new AuthResponseDTO(token));
         }
 }

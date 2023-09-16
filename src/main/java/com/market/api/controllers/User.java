@@ -6,10 +6,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
+@RequestMapping("/api")
 public class User {
+    
     @CrossOrigin
     @GetMapping("/user")
     public String sendString(){
+        System.out.println("request");
         return "{\"name\": \"petr\"}";
     }
 
