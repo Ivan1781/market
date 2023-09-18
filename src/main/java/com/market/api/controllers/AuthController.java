@@ -57,8 +57,8 @@ public class AuthController {
     }
 
     @CrossOrigin
-    @PostMapping("/login")
-    public ResponseEntity<AuthResponseDTO> login(@RequestBody LoginDto loginDto){
+    @PostMapping(value="/login", produces = "application/json")
+    public ResponseEntity<AuthResponseDTO> login(@RequestBody LoginDto loginDto){   
         System.out.println("I'm here"); 
         UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken =
         new UsernamePasswordAuthenticationToken(loginDto.getUsername(),
@@ -69,8 +69,9 @@ public class AuthController {
             usernamePasswordAuthenticationToken);
             SecurityContextHolder.getContext().setAuthentication(authentication);
             String token = jwtGenerator.generateToken(authentication);
-            // ResponseEntity<AuthResponseDTO> q = new ResponseEntity<AuthResponseDTO>(new AuthResponseDTO(token), HttpStatus.OK);
-            // System.out.println(q.toString());
-            return ResponseEntity.ok(new AuthResponseDTO(token));
+            ResponseEntity<AuthResponseDTO> response = new ResponseEntity<AuthResponseDTO>(new AuthResponseDTO(token), 
+            HttpStatus.OK);
+            System.out.println(response.toString());
+            return response;   
         }
 }
