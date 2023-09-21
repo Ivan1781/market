@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.market.api.controllers.dto.AuthResponseDTO;
 import com.market.api.controllers.dto.LoginDto;
 import com.market.api.controllers.dto.RegisterDto;
+import com.market.api.controllers.dto.RegisterResponse;
 import com.market.api.models.Role;
 import com.market.api.models.UserEntity;
 import com.market.api.repositories.RoleRepository;
@@ -43,9 +44,11 @@ public class AuthController {
     
     @CrossOrigin
     @PostMapping("/register")
-    public ResponseEntity<String> register(@RequestBody RegisterDto registerDto) {
+    public ResponseEntity<RegisterResponse> register(@RequestBody RegisterDto registerDto) {
         if(userRepository.existsByUserName(registerDto.getUserName())){
-            return new ResponseEntity<>("User already exists", HttpStatus.BAD_REQUEST);
+            RegisterResponse errorUserExist = new RegisterResponse();
+            errorUserExist.setName("User already exists");
+            return new ResponseEntity<RegisterResponse>(errorUserExist, HttpStatus.BAD_REQUEST);
         }    
         UserEntity user = new UserEntity();
         user.setUserName(registerDto.getUserName());
@@ -53,13 +56,14 @@ public class AuthController {
         Role roles = roleRepository.findByName("USER").get();
         user.setRoles(Collections.singletonList(roles));
         userRepository.save(user);
-        return new ResponseEntity<String>("User successfuly registered", HttpStatus.OK);
+        RegisterResponse successResponse = new RegisterResponse();
+        successResponse.setName("User successfuly registered");
+        return new ResponseEntity<RegisterResponse>(successResponse, HttpStatus.OK);
     }
 
     @CrossOrigin
     @PostMapping(value="/login", produces = "application/json")
     public ResponseEntity<AuthResponseDTO> login(@RequestBody LoginDto loginDto){   
-        System.out.println("I'm here"); 
         UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken =
         new UsernamePasswordAuthenticationToken(loginDto.getUsername(),
             loginDto.getPassword());

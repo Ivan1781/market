@@ -8,6 +8,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import java.util.ArrayList;
@@ -44,4 +45,16 @@ public class UserEntity {
             referencedColumnName = "id"
         )) 
     private List<Role> roles = new ArrayList<>();
+    
+    // @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    // @JoinTable(
+    //     name = "user_photos",
+    //     joinColumns = @JoinColumn(name = "user_id", 
+    //         referencedColumnName = "id"),
+    //     inverseJoinColumns = @JoinColumn(
+    //         name = "photo_id",
+    //         referencedColumnName = "id"
+    //     )
+    // )
+    // private List<Photo> photos = new ArrayList<>();
 }

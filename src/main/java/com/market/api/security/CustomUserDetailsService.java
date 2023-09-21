@@ -22,8 +22,10 @@ public class CustomUserDetailsService implements UserDetailsService {
     public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException {
         UserEntity userEntity = userRepository.findByUserName(userName).orElseThrow(
             ()->new UsernameNotFoundException("Username not found"));
-        return new User(userEntity.getUserName(), userEntity.getPassword(), 
-        userEntity.getRoles().stream().map(
+        return new User(
+            userEntity.getUserName(), 
+            userEntity.getPassword(), 
+            userEntity.getRoles().stream().map(
             x-> new SimpleGrantedAuthority(x.getName())).collect(Collectors.toList()));
     }
     
