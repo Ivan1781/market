@@ -39,7 +39,8 @@ public class WebSecurityConfig {
             );
             http.exceptionHandling(c->c.authenticationEntryPoint(authEntryPoint));
             http.cors();
-            
+            http.logout(c->c.logoutUrl("/logout")
+                .logoutSuccessUrl("/api/auth/login"));
             http.sessionManagement(x->x
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS));
                 
